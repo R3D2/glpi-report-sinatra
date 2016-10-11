@@ -68,7 +68,10 @@ post '/' do
                           WHERE ticket.actiontime >  0
                             AND user.type = 1
                             AND ticket.entities_id =" + c + " AND ticket.solvedate BETWEEN '" + @start_date + "' AND '" +
-                                @end_date + "'" + " AND ticket.status >= 5")
+                                @end_date + "'" + " AND ticket.status = 5")
+
+        puts @tickets.to_a
+
         # Get the name of the customer
         @customer = DB.fetch("SELECT name FROM glpi_entities WHERE glpi_entities.id =" + c).all
 
@@ -80,7 +83,7 @@ post '/' do
                             WHERE ticket.actiontime >  0
                               AND user.type = 1
                               AND ticket.entities_id =" + c + " AND ticket.solvedate BETWEEN '" + @start_date + "' AND '" +
-                                  @end_date + "'" + " AND ticket.status >= 5")
+                                  @end_date + "'" + " AND ticket.status = 5")
         # Store the html rendered with values in an array
         if @tickets.to_a.length > 0
           @reports[@customer.first[:name]] = erb :report
@@ -117,7 +120,7 @@ post '/' do
         # Only one report to process
         @reports.each_key do |r|
           kit = PDFKit.new(@reports[r])
-	  @file << kit.to_file(File.dirname(__FILE__) + '/public/tmp/' + r + '_rapport_mensuel.pdf')
+	        @file << kit.to_file(File.dirname(__FILE__) + '/public/tmp/' + r + '_rapport_mensuel.pdf')
           content_type 'application/pdf'
           send_file @file.first
         end
