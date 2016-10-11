@@ -8,6 +8,8 @@ require 'date'
 require 'pdfkit'
 require 'zip'
 
+set :root, File.dirname(__FILE__)
+
 # Database parameters
 @db_host = "localhost"
 @db_user = "root"
@@ -88,11 +90,11 @@ post '/' do
         end
       end
 
+      @file = Array.new
+      time = Time.new
+
       # More than one report to process
       if @reports.length > 1
-
-        @file = Array.new
-        time = Time.new
 
         # Generate reports
         @reports.each_key do |r|
@@ -115,7 +117,7 @@ post '/' do
         # Only one report to process
         @reports.each_key do |r|
           kit = PDFKit.new(@reports[r])
-          @file << kit.to_file(File.dirname(__FILE__) + '/public/tmp/' + r + '_rapport_mensuel.pdf')
+	  @file << kit.to_file(File.dirname(__FILE__) + '/public/tmp/' + r + '_rapport_mensuel.pdf')
           content_type 'application/pdf'
           send_file @file.first
         end
