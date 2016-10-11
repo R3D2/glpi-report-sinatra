@@ -56,6 +56,15 @@ post '/' do
       @reports = Hash.new
       @customers = Hash.new
 
+      case params[:status]
+        when 'resolved'
+          @status = ' = 5'
+        when 'closed'
+          @status = ' = 6'
+        when 'both'
+          @status = ' >= 5'
+      end
+
       # Foreach customers selected by the user, get the tickets and the tasks related
       params[:customers].to_a.each do |c|
         @tickets = DB.fetch("SELECT ticket.id, ticket.name, ticket.actiontime, user.alternative_email,
@@ -68,9 +77,7 @@ post '/' do
                           WHERE ticket.actiontime >  0
                             AND user.type = 1
                             AND ticket.entities_id =" + c + " AND ticket.solvedate BETWEEN '" + @start_date + "' AND '" +
-                                @end_date + "'" + " AND ticket.status = 5")
-
-        puts @tickets.to_a
+                                @end_date + "'" + " AND ticket.status " + @status)
 
         # Get the name of the customer
         @customer = DB.fetch("SELECT name FROM glpi_entities WHERE glpi_entities.id =" + c).all
@@ -83,7 +90,7 @@ post '/' do
                             WHERE ticket.actiontime >  0
                               AND user.type = 1
                               AND ticket.entities_id =" + c + " AND ticket.solvedate BETWEEN '" + @start_date + "' AND '" +
-                                  @end_date + "'" + " AND ticket.status = 5")
+                                  @end_date + "'" + " AND ticket.status " + @status)
         # Store the html rendered with values in an array
         if @tickets.to_a.length > 0
           @reports[@customer.first[:name]] = erb :report
