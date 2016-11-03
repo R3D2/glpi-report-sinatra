@@ -28,7 +28,7 @@ PLATFORMS
 
 DEPENDENCIES
   mysql2
-  passenger
+  passenger (>= 5.0.25)
   pdfkit
   prawn
   rubyzip
