@@ -83,14 +83,21 @@ post '/' do
         @customer = DB.fetch("SELECT name FROM glpi_entities WHERE glpi_entities.id =" + c).all
 
         # Get the SUM of all tickets
-        @tasks_sum = DB.fetch("SELECT SEC_TO_TIME(SUM(ticket.actiontime)) as TOTAL_TIME
-                            FROM glpi_tickets AS ticket
-                              LEFT OUTER JOIN glpi_tickets_users AS user
-                                ON ticket.id = user.tickets_id
-                            WHERE ticket.actiontime >  0
-                              AND user.type = 1
-                              AND ticket.entities_id =" + c + " AND ticket.solvedate BETWEEN '" + @start_date + "' AND '" +
-                                  @end_date + "'" + " AND ticket.status " + @status)
+        @tasks_sum = DB.fetch("SELECT SUM(ticket.actiontime) as TOTAL_TIME
+                          FROM glpi_tickets AS ticket
+                            LEFT OUTER JOIN glpi_tickets_users AS user
+                              ON ticket.id = user.tickets_id
+                          WHERE ticket.actiontime >  0
+                            AND user.type = 1
+                            AND ticket.entities_id =" + c + " AND ticket.solvedate BETWEEN '" + @start_date + "' AND '" +
+                                @end_date + "'" + " AND ticket.status " + @status)
+
+        # Convert the total time in seconds in an hour:seconds:minute format
+        t = @tasks_sum.to_a.first[:TOTAL_TIME]
+        mm, ss = t.divmod(60)
+        hh, dd = mm.divmod(60)
+        @total_time = "%02d:%02d:%02d" % [hh.to_s, dd.to_s, ss.to_s]
+
         # Store the html rendered with values in an array
         if @tickets.to_a.length > 0
           @reports[@customer.first[:name]] = erb :report

@@ -431,7 +431,7 @@
         <tbody>
         <tr>
           <td class="grand-total" colspan="5">
-            <div><span>TOTAL:</span><%= Time.at(@tasks_sum.to_a.first[:TOTAL_TIME]).strftime("%H:%M:%S") %></div>
+            <div><span>TOTAL:</span><%= @total_time.to_s %></div>
           </td>
         </tr>
         </tbody>
