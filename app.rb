@@ -103,6 +103,7 @@ post '/' do
           @reports[@customer.first[:name]] = erb :report
         else
           # ERROR CODE 0 - We didn't find any tickets
+          DB.disconnect
           redirect to('/0')
         end
       end
@@ -129,6 +130,7 @@ post '/' do
         end
         content_type 'application/zip'
         zip = File.join(zipfile_name, zipfile_path)
+        DB.disconnect
         send_file(zipfile_path, :disposition => 'attachment')
       else
         # Only one report to process
@@ -136,15 +138,18 @@ post '/' do
           kit = PDFKit.new(@reports[r])
 	        @file << kit.to_file(File.dirname(__FILE__) + '/public/tmp/' + r + '_rapport_mensuel.pdf')
           content_type 'application/pdf'
+          DB.disconnect
           send_file @file.first
         end
       end
     else
       # ERROR CODE 1 - startdate is plus récente than enddate
+      DB.disconnect
       redirect to('/1')
     end
   else
     # ERROR CODE 2 - No customer selected
+    DB.disconnect
     redirect to('/2')
   end
 end
