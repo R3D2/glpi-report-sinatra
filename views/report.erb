@@ -419,7 +419,7 @@
             <td class="type"><%= if t[:alternative_email].split('@')[0] != nil
                                  then t[:alternative_email].split('@')[0] else t[:realname].to_s.downcase end %></td>
             <td class="type"><%= if t[:type] == 2 then 'Demande' else 'Incident' end %></td>
-            <td class="time"><%= Time.at(t[:actiontime]).utc.strftime("%H:%M:%S") %></td>
+            <td class="time"><%= Time.at(t[:actiontime].to_i).utc.strftime("%H:%M:%S") %></td>
           </tr>
         <% end %>
         </tr>
@@ -439,7 +439,6 @@
     </div>
   </div>
 </section>
-
 <footer>
   <div class="container">
     <div class="thanks">Nous vous remercions pour votre confiance !</div>

@@ -17,7 +17,7 @@ set :root, File.dirname(__FILE__)
 @db_name = "GLPI"
 
 DB = Sequel.connect(:adapter => 'mysql2', :host => @db_host, :username => @db_user,
-                    :password => @db_pass, :database => @db_name)
+                    :password => @db_pass, :database => @db_name, :cast => false)
 
 ERROR_MESSAGE = [
     "Aucun ticket n'a été trouvé dans cette plage de date !",
@@ -83,7 +83,7 @@ post '/' do
         @customer = DB.fetch("SELECT name FROM glpi_entities WHERE glpi_entities.id =" + c).all
 
         # Get the SUM of all tickets
-        @tasks_sum = DB.fetch("SELECT SUM(ticket.actiontime) as TOTAL_TIME
+        @tasks_sum = DB.fetch("SELECT CAST(SUM(ticket.actiontime) AS UNSIGNED) as TOTAL_TIME
                           FROM glpi_tickets AS ticket
                             LEFT OUTER JOIN glpi_tickets_users AS user
                               ON ticket.id = user.tickets_id
@@ -93,7 +93,7 @@ post '/' do
                                 @end_date + "'" + " AND ticket.status " + @status)
 
         # Convert the total time in seconds in an hour:seconds:minute format
-        t = @tasks_sum.to_a.first[:TOTAL_TIME]
+        t = @tasks_sum.to_a.first[:TOTAL_TIME].to_i
         mm, ss = t.divmod(60)
         hh, dd = mm.divmod(60)
         @total_time = "%02d:%02d:%02d" % [hh.to_s, dd.to_s, ss.to_s]
