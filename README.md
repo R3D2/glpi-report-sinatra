@@ -7,6 +7,11 @@ given range of dates.
 
 ## Installation
 
+### Database
+
+Specify the right credentials to log into the GLPI database in the 'app.rb' file.
+
+### Deploy
 In our production environment we use Phusion passenger + apache, just follow the guidelines on the web. If you
 want to use another web server feel free to remove the "config.ru" and the passenger gem from the dependencies.
 
