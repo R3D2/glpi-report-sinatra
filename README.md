@@ -6,10 +6,10 @@ is a client in our case and i was asked to make a program who generates a summar
 given range of dates.
 
 ### Home page
-![screenshot](https://github.com/R3D2/glpi-report-sinatra/docs/home_page.png "screenshot")
+![screenshot](https://github.com/R3D2/glpi-report-sinatra/raw/master/docs/home_page.png)
 
 ### Report
-![screenshot](https://github.com/R3D2/glpi-report-sinatra/docs/report_example.pdf "report example")
+![preview](https://github.com/R3D2/glpi-report-sinatra/raw/master/docs/report_example.pdf)
 
 
 ## Installation
