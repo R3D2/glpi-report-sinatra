@@ -106,7 +106,7 @@ post '/' do
         else
           # ERROR CODE 0 - We didn't find any tickets
           DB.disconnect
-          redirect to('/0')
+          redirect to('/report/0')
         end
       end
 
@@ -147,11 +147,11 @@ post '/' do
     else
       # ERROR CODE 1 - startdate is plus récente than enddate
       DB.disconnect
-      redirect to('/1')
+      redirect to('/report/1')
     end
   else
     # ERROR CODE 2 - No customer selected
     DB.disconnect
-    redirect to('/2')
+    redirect to('/report/2')
   end
 end
