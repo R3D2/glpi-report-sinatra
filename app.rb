@@ -46,8 +46,8 @@ post '/' do
   if params[:customers].to_a.length != 0
 
     # Get the forms parameters and parse them
-    @start_date = Date.strptime(params[:start_date], '%m/%d/%Y').strftime('%Y-%m-%d')
-    @end_date = Date.strptime(params[:end_date], '%m/%d/%Y').strftime('%Y-%m-%d')
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
 
     # We check if the selected dates are legit
     if @start_date < @end_date
@@ -63,6 +63,8 @@ post '/' do
           @status = ' = 6'
         when 'both'
           @status = ' >= 5'
+        else
+          @status = ' = 5'
       end
 
       # Foreach customers selected by the user, get the tickets and the tasks related
