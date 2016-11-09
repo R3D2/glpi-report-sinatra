@@ -5,6 +5,13 @@ In our company, we use GLPI has a tool to follow-up all incidents or request mad
 is a client in our case and i was asked to make a program who generates a summary of all the tickets resolved in a 
 given range of dates.
 
+### Home page
+![screenshot](https://github.com/R3D2/glpi-report-sinatra/docs/home_page.png "screenshot")
+
+### Report
+![screenshot](https://github.com/R3D2/glpi-report-sinatra/docs/report_example.pdf "report example")
+
+
 ## Installation
 
 ### Database
